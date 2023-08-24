@@ -1,21 +1,40 @@
 package com.example.coders_course.controller;
 
 import com.example.coders_course.model.Teacher;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.coders_course.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "teacher")
 public class TeacherController {
     private final TeacherService teacherService;
 
-    public StudentController(TeacherService teacherService) {
-        this.studentService = studentService;
+    @Autowired
+    public TeacherController(TeacherService teacherService) {
+        this.teacherService = teacherService;
     }
+
     @GetMapping
-    public List<Teacher> getTeachers(){
+    public List<Teacher> getTeachers() {
         return teacherService.getTeachers();
+    }
+    @PostMapping
+    public void registerNewTeacher(@RequestBody Teacher teacher){
+        teacherService.addNewTeacher(teacher);
+    }
+    @DeleteMapping(path = "{teacherId}")
+    public void deleteTeacher(@PathVariable("teacherId") Long teacherId){
+        teacherService.deleteTeacher(teacherId);
+    }
+    @PutMapping(path = "{teacherId}")
+    public void updateTeacher(
+            @PathVariable("teacherId") Long teacherId,
+            @RequestBody Teacher updatedFields
+    ){
+        teacherService.updateTeacher(teacherId, updatedFields);
     }
 
 }
