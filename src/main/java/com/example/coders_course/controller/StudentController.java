@@ -1,10 +1,15 @@
 package com.example.coders_course.controller;
 
-import com.example.coders_course.model.Group;
-import com.example.coders_course.model.Student;
-import com.example.coders_course.model.Teacher;
-import com.example.coders_course.service.StudentService;
+import com.example.coders_course.dto.ResponseModel;
+import com.example.coders_course.dto.StudentDTO;
+import com.example.coders_course.exceptions.EmailAlreadyTakenException;
+import com.example.coders_course.exceptions.GroupNotFoundException;
+import com.example.coders_course.exceptions.StudentNotFoundException;
+import com.example.coders_course.entity.Student;
+import com.example.coders_course.service.Impl.StudentServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -13,30 +18,45 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "student")
 public class StudentController {
-    private final StudentService studentService;
+    private final StudentServiceImpl studentServiceImpl;
 
-    @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
-    @PostMapping("{groupId}")
-    public void registerNewStudent(@RequestBody Student student
-                                    , @PathVariable("groupId") Long groupId){
-        studentService.addNewStudent(student, groupId);
+    @GetMapping("/all")
+    public ResponseEntity<ResponseModel<List<StudentDTO>>> getStudents() {
+        return studentServiceImpl.getStudents();
     }
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public ResponseEntity<ResponseModel<StudentDTO>> getStudentById(@RequestParam("id") Long id){
+        return studentServiceImpl.getStudentById(id);
+    }
+    @PostMapping()
+    public void registerNewStudent(@RequestBody Map<String, Object> requestBody) throws GroupNotFoundException, EmailAlreadyTakenException {
+        String groupIdsString = requestBody.get("groupId").toString();
+        String[] groupIdStrings = groupIdsString.split(",");
+        List<Long> groupIds = new ArrayList<>();
+        for (String groupIdStr : groupIdStrings) {
+            groupIds.add(Long.parseLong(groupIdStr));
+        }
+        Map<String, Object> StudentMap = (Map<String, Object>) requestBody.get("Student");
+
+        Student student = new Student();
+        student.setName(StudentMap.get("name").toString());
+        student.setSurname(StudentMap.get("surname").toString());
+        student.setAddress(StudentMap.get("address").toString());
+        student.setBirthdate(LocalDate.parse(StudentMap.get("birthdate").toString()));
+        student.setEmail(StudentMap.get("email").toString());
+        student.setPassword(StudentMap.get("password").toString());
+        studentServiceImpl.addNewStudent(student, groupIds);
     }
     @DeleteMapping(path = "{studentId}")
-    public void deleteStudent(@PathVariable("studentId") Long studentId){
-        studentService.deleteStudent(studentId);
+    public void deleteStudent(@PathVariable("studentId") Long studentId) throws StudentNotFoundException {
+        studentServiceImpl.deleteStudent(studentId);
     }
     @PutMapping
-    public void updateStudent(@RequestBody Map<String, Object> requestBody) {
+    public void updateStudent(@RequestBody Map<String, Object> requestBody) throws EmailAlreadyTakenException, StudentNotFoundException {
         Long studentId = Long.parseLong(requestBody.get("studentId").toString());
         String groupIdsString = requestBody.get("groupId").toString();
         String[] groupIdStrings = groupIdsString.split(",");
@@ -54,6 +74,6 @@ public class StudentController {
         updatedStudent.setEmail(updatedStudentMap.get("email").toString());
         updatedStudent.setPassword(updatedStudentMap.get("password").toString());
 
-        studentService.updateStudent(studentId, groupIds, updatedStudent);
+        studentServiceImpl.updateStudent(studentId, groupIds, updatedStudent);
     }
 }

@@ -1,73 +1,22 @@
 package com.example.coders_course.service;
 
-import com.example.coders_course.model.Teacher;
-import com.example.coders_course.repository.TeacherRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.coders_course.dto.ResponseModel;
+import com.example.coders_course.dto.TeacherDTO;
+import com.example.coders_course.exceptions.EmailAlreadyTakenException;
+import com.example.coders_course.exceptions.TeacherNotFoundException;
+import com.example.coders_course.entity.Teacher;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class TeacherService {
-    private final TeacherRepository teacherRepository;
+public interface TeacherService {
+    ResponseEntity<ResponseModel<List<TeacherDTO>>> getTeachers();
 
-    @Autowired
-    public TeacherService(TeacherRepository teacherRepository) {
-        this.teacherRepository = teacherRepository;
-    }
+    ResponseEntity<ResponseModel<TeacherDTO>> getTeacherById(Long id);
 
-    public List<Teacher> getTeachers() {
-        return teacherRepository.findTeacherByState(1);
-    }
+    void addNewTeacher(Teacher teacher) throws EmailAlreadyTakenException;
 
-    public void addNewTeacher(Teacher teacher) {
-        Optional<Teacher> teacherByEmail = teacherRepository.findTeacherByEmail(teacher.getEmail());
-        if (teacherByEmail.isPresent()) {
-            throw new IllegalStateException("email is already taken");
-        }
-        teacher.setState(1);
-        teacherRepository.save(teacher);
-    }
+    void deleteTeacher(Long teacherId) throws TeacherNotFoundException;
 
-    @Transactional //why transactional is used?
-    public void deleteTeacher(Long teacherId) {
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(
-                () -> new IllegalStateException("Teacher with id" + teacherId + "doesn't exist"));
-        teacher.setState(0);
-
-    }
-
-    @Transactional
-    public void updateTeacher(Long teacherId, Teacher updatedFields) {
-        Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(
-                () -> new IllegalStateException("Teacher with id " + teacherId + " doesn't exist"));
-
-        if (updatedFields.getName() != null) {
-            teacher.setName(updatedFields.getName());
-        }
-        if (updatedFields.getSurname() != null) {
-            teacher.setSurname(updatedFields.getSurname());
-        }
-        if (updatedFields.getAddress() != null) {
-            teacher.setAddress(updatedFields.getAddress());
-        }
-        if (updatedFields.getEmail() != null) {
-            Optional<Teacher> teacherByEmail = teacherRepository.findTeacherByEmail(updatedFields.getEmail());
-
-            if (teacherByEmail.isPresent()) {
-                throw new IllegalStateException("email is already taken");
-            }
-
-            teacher.setEmail(updatedFields.getEmail());
-        }
-        if (updatedFields.getPassword() != null) {
-            teacher.setPassword(updatedFields.getPassword());
-        }
-        if (updatedFields.getBirthdate() != null) {
-            teacher.setBirthdate(updatedFields.getBirthdate());
-        }
-        teacher.setState(1);
-    }
+    void updateTeacher(Long teacherId, Teacher updatedFields) throws EmailAlreadyTakenException, TeacherNotFoundException;
 }
