@@ -5,6 +5,8 @@ import com.example.coders_course.dto.TeacherDTO;
 import com.example.coders_course.exceptions.EmailAlreadyTakenException;
 import com.example.coders_course.exceptions.TeacherNotFoundException;
 import com.example.coders_course.entity.Teacher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -19,4 +21,5 @@ public interface TeacherService {
     void deleteTeacher(Long teacherId) throws TeacherNotFoundException;
 
     void updateTeacher(Long teacherId, Teacher updatedFields) throws EmailAlreadyTakenException, TeacherNotFoundException;
+    Page<TeacherDTO> getTeacherWithinPage(PageRequest name);
 }

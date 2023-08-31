@@ -2,13 +2,16 @@ package com.example.coders_course.controller;
 
 import com.example.coders_course.dto.ResponseModel;
 import com.example.coders_course.dto.StudentDTO;
+import com.example.coders_course.dto.TeacherDTO;
 import com.example.coders_course.exceptions.EmailAlreadyTakenException;
 import com.example.coders_course.exceptions.GroupNotFoundException;
 import com.example.coders_course.exceptions.StudentNotFoundException;
 import com.example.coders_course.entity.Student;
 import com.example.coders_course.service.Impl.StudentServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +34,11 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<ResponseModel<StudentDTO>> getStudentById(@RequestParam("id") Long id){
         return studentServiceImpl.getStudentById(id);
+    }
+    @GetMapping("/page") //with page
+    public Page<Student> getStudentsWithinPage(@RequestParam Integer page,
+                                                  @RequestParam(value = "size", defaultValue = "5", required = false) Integer size){
+        return studentServiceImpl.getStudentWithinPage(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, "name")));
     }
     @PostMapping()
     public void registerNewStudent(@RequestBody Map<String, Object> requestBody) throws GroupNotFoundException, EmailAlreadyTakenException {

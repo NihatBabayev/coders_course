@@ -9,6 +9,8 @@ import com.example.coders_course.repository.TeacherRepository;
 import com.example.coders_course.service.TeacherService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -89,4 +91,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
 
+    public Page<TeacherDTO> getTeacherWithinPage(PageRequest pageRequest) {
+        return teacherRepository.getAllByPage(pageRequest);
+    }
 }

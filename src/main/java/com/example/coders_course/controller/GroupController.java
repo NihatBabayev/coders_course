@@ -2,13 +2,16 @@ package com.example.coders_course.controller;
 
 import com.example.coders_course.dto.GroupDTO;
 import com.example.coders_course.dto.ResponseModel;
+import com.example.coders_course.dto.TeacherDTO;
 import com.example.coders_course.exceptions.GroupAlreadyExistsException;
 import com.example.coders_course.exceptions.GroupNotFoundException;
 import com.example.coders_course.exceptions.TeacherNotFoundException;
 import com.example.coders_course.entity.Group;
 import com.example.coders_course.service.Impl.GroupServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,11 @@ public class GroupController {
     @GetMapping
     public ResponseEntity<ResponseModel<GroupDTO>> getGroupById(@RequestParam("id") Long id) throws GroupNotFoundException {
         return groupServiceImpl.getGroupById(id);
+    }
+    @GetMapping("/page") //with page
+    public Page<Group> getGroupsWithinPage(@RequestParam Integer page,
+                                                  @RequestParam(value = "size", defaultValue = "5", required = false) Integer size){
+        return groupServiceImpl.getGroupsWithinPage(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC, "name")));
     }
     @PostMapping
     public void registerNewGroup(@RequestBody Group group,

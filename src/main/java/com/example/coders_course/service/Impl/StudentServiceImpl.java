@@ -15,6 +15,8 @@ import com.example.coders_course.repository.StudentRepository;
 import com.example.coders_course.service.StudentService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -184,6 +186,11 @@ public class StudentServiceImpl implements StudentService {
 
 
         student.setState(1);
+    }
+
+    @Override
+    public Page<Student> getStudentWithinPage(PageRequest pageRequest) {
+        return studentRepository.getAllWithinPage(pageRequest);
     }
 
 

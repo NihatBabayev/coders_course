@@ -13,6 +13,8 @@ import com.example.coders_course.repository.TeacherRepository;
 import com.example.coders_course.service.GroupService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -129,5 +131,10 @@ public class GroupServiceImpl implements GroupService {
                 () -> new TeacherNotFoundException()));
 
         group.setState(1);
+    }
+
+    @Override
+    public Page<Group> getGroupsWithinPage(PageRequest pageRequest) {
+        return groupRepository.getAllWithinPage(pageRequest);
     }
 }

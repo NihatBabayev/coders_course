@@ -6,6 +6,8 @@ import com.example.coders_course.exceptions.EmailAlreadyTakenException;
 import com.example.coders_course.exceptions.GroupNotFoundException;
 import com.example.coders_course.exceptions.StudentNotFoundException;
 import com.example.coders_course.entity.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -18,4 +20,5 @@ public interface StudentService {
     void updateStudent(Long studentId, List<Long> newGroupIds, Student updatedFields) throws EmailAlreadyTakenException, StudentNotFoundException;
 
 
+    Page<Student> getStudentWithinPage(PageRequest pageRequest);
 }
