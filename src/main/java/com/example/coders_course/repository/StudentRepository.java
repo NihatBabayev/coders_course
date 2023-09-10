@@ -20,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> getStudentById(Long id);
     @Query("SELECT DISTINCT s FROM Student s JOIN FETCH s.groups g JOIN FETCH g.teacher t WHERE s.state = 1 AND g.state = 1 AND t.state = 1")
     Page<Student> getAllWithinPage(PageRequest pageRequest);
+    @Query("Select s.profilePhotoName from Student s where s.id=?1")
+    String getProfilePhotoNameById(Long id);
 }

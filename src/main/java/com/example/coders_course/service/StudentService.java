@@ -21,4 +21,8 @@ public interface StudentService {
 
 
     Page<Student> getStudentWithinPage(PageRequest pageRequest);
+
+    void addProfilePhoto(Long id, String fileName);
+
+    String getProfilePhotoName(Long id);
 }

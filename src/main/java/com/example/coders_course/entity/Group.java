@@ -2,6 +2,7 @@ package com.example.coders_course.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 
@@ -19,7 +20,9 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Group name must not be blank")
     private String name;
+    @NotBlank(message = "Lesson name must not be blank")
     private String lessonName;
     private Integer state;
 

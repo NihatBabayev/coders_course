@@ -15,9 +15,7 @@ public class TeacherServiceImplJPA {
     private final TeacherRepositoryJPA teacherRepositoryJPA;
 
     public ResponseEntity<ResponseModel<Teacher>> getTeacherById(Long id) {
-
         Teacher teacher = teacherRepositoryJPA.getTeacherById(id);
-
         ResponseModel<Teacher> teacherResponseModel = new ResponseModel<>();
         teacherResponseModel.setData(teacher);
         teacherResponseModel.setMessage("Success");

@@ -8,6 +8,7 @@ import com.example.coders_course.entity.Teacher;
 import com.example.coders_course.repository.TeacherRepository;
 import com.example.coders_course.service.TeacherService;
 import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
 
@@ -35,6 +37,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     public ResponseEntity<ResponseModel<TeacherDTO>> getTeacherById(Long id) {
+        log.info("received employee with id: " + id);
         ResponseModel<TeacherDTO> teacherResponseModel = new ResponseModel<>();
         teacherResponseModel.setData(teacherRepository.findTeacherDTOById(id));
         teacherResponseModel.setMessage("success");
@@ -93,5 +96,20 @@ public class TeacherServiceImpl implements TeacherService {
 
     public Page<TeacherDTO> getTeacherWithinPage(PageRequest pageRequest) {
         return teacherRepository.getAllByPage(pageRequest);
+    }
+
+    @Override
+    public void addProfilePhoto(Long id, String fileName) {
+        Teacher teacher = teacherRepository.findById(id).orElse(null);
+        if (teacher != null) {
+            teacher.setProfilePhotoName(fileName);
+            teacherRepository.save(teacher);
+        }
+
+    }
+
+    @Override
+    public String getProfilePhotoName(Long id) {
+        return teacherRepository.getProfilePhotoNameById(id);
     }
 }

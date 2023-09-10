@@ -2,7 +2,6 @@ package com.example.coders_course.controller;
 
 import com.example.coders_course.dto.GroupDTO;
 import com.example.coders_course.dto.ResponseModel;
-import com.example.coders_course.dto.TeacherDTO;
 import com.example.coders_course.exceptions.GroupAlreadyExistsException;
 import com.example.coders_course.exceptions.GroupNotFoundException;
 import com.example.coders_course.exceptions.TeacherNotFoundException;
@@ -30,7 +29,7 @@ public class GroupController {
         return groupServiceImpl.getGroups();
     }
     @GetMapping
-    public ResponseEntity<ResponseModel<GroupDTO>> getGroupById(@RequestParam("id") Long id) throws GroupNotFoundException {
+    public ResponseEntity<ResponseModel<GroupDTO>> getGroupById(@RequestParam("id") Long id)  {
         return groupServiceImpl.getGroupById(id);
     }
     @GetMapping("/page") //with page

@@ -193,5 +193,20 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.getAllWithinPage(pageRequest);
     }
 
+    @Override
+    public void addProfilePhoto(Long id, String fileName) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student != null) {
+            student.setProfilePhotoName(fileName);
+            studentRepository.save(student);
+        }
+
+    }
+
+    @Override
+    public String getProfilePhotoName(Long id) {
+        return studentRepository.getProfilePhotoNameById(id);
+    }
+
 
 }

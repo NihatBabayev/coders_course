@@ -64,7 +64,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
 
-    public ResponseEntity<ResponseModel<GroupDTO>> getGroupById(Long id) throws GroupNotFoundException {
+    public ResponseEntity<ResponseModel<GroupDTO>> getGroupById(Long id)  {
         Group group = groupRepository.findGroupWithTeacherById(id);
         if (group == null) {
             // Handle not found case
@@ -93,7 +93,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
 
-    public void addNewGroup(Group group, Long teacherId) throws TeacherNotFoundException, GroupAlreadyExistsException {
+    public void addNewGroup(Group group, Long teacherId) throws GroupAlreadyExistsException, TeacherNotFoundException {
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(
                 () -> new TeacherNotFoundException());
         Optional<Group> groupByName = groupRepository.findByName(group.getName());
@@ -116,7 +116,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Transactional
-    public void updateGroup(Long groupId, Long newTeacherId, Group updatedFields) throws TeacherNotFoundException, GroupNotFoundException {
+    public void updateGroup(Long groupId, Long newTeacherId, Group updatedFields) throws GroupNotFoundException, TeacherNotFoundException {
         Group group = groupRepository.findById(groupId).orElseThrow(
                 () -> new GroupNotFoundException());
 

@@ -1,6 +1,9 @@
 package com.example.coders_course.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -18,10 +21,17 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Name must not be blank")
     private String name;
+    @NotBlank(message = "Surname must not be blank")
     private String surname;
     private String address;
+    @Email
     private String email;
+    private String profilePhotoName;
+
+    @NotBlank(message = "Password must not be blank")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
     private LocalDate birthdate;
     private Integer state;

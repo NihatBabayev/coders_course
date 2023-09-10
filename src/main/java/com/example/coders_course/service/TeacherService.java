@@ -22,4 +22,7 @@ public interface TeacherService {
 
     void updateTeacher(Long teacherId, Teacher updatedFields) throws EmailAlreadyTakenException, TeacherNotFoundException;
     Page<TeacherDTO> getTeacherWithinPage(PageRequest name);
+
+    void addProfilePhoto(Long id, String fileName);
+    String getProfilePhotoName(Long id);
 }

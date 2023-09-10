@@ -15,10 +15,10 @@ import java.util.List;
 
 public interface GroupService {
     ResponseEntity<ResponseModel<List<GroupDTO>>> getGroups();
-    ResponseEntity<ResponseModel<GroupDTO>> getGroupById(Long id) throws GroupNotFoundException;
-    void addNewGroup(Group group, Long teacherId) throws TeacherNotFoundException, GroupAlreadyExistsException;
+    ResponseEntity<ResponseModel<GroupDTO>> getGroupById(Long id) ;
+    void addNewGroup(Group group, Long teacherId) throws GroupAlreadyExistsException, TeacherNotFoundException;
     void deleteGroup(Long groupId) throws GroupNotFoundException;
-    void updateGroup(Long groupId, Long newTeacherId, Group updatedFields) throws TeacherNotFoundException, GroupNotFoundException;
+    void updateGroup(Long groupId, Long newTeacherId, Group updatedFields) throws GroupNotFoundException, TeacherNotFoundException;
 
     Page<Group> getGroupsWithinPage(PageRequest name);
 }
