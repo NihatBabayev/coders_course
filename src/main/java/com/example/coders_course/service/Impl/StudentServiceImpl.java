@@ -208,5 +208,10 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.getProfilePhotoNameById(id);
     }
 
+    @Override
+    public Student getStudentByEmailAndPassword(String email, String password) {
+        return studentRepository.getStudentByEmailAndPassword(email, password);
+    }
+
 
 }

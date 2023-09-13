@@ -22,4 +22,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> getAllWithinPage(PageRequest pageRequest);
     @Query("Select s.profilePhotoName from Student s where s.id=?1")
     String getProfilePhotoNameById(Long id);
+
+    @Query
+    Student getStudentByEmailAndPassword(String email, String password);
 }

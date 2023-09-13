@@ -27,4 +27,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     Page<TeacherDTO> getAllByPage(PageRequest pageRequest);
     @Query("Select t.profilePhotoName from Teacher t where t.id=?1")
     String getProfilePhotoNameById(Long id);
+
+    @Query
+    Teacher getTeacherByEmailAndPassword(String email, String password);
 }

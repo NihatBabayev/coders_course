@@ -91,7 +91,7 @@ public class TeacherController {
     }
 
 
-    @PostMapping
+    @PostMapping("/save")
     public void registerNewTeacher(@RequestBody Teacher teacher) throws EmailAlreadyTakenException {
         teacherServiceImpl.addNewTeacher(teacher);
     }

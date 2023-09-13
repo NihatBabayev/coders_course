@@ -112,4 +112,11 @@ public class TeacherServiceImpl implements TeacherService {
     public String getProfilePhotoName(Long id) {
         return teacherRepository.getProfilePhotoNameById(id);
     }
+
+    @Override
+    public Teacher getTeacherByEmailAndPassword(String email, String password) {
+        return teacherRepository.getTeacherByEmailAndPassword(email, password);
+    }
+
+
 }

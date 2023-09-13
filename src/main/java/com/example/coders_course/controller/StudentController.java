@@ -32,7 +32,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "student")
+@RequestMapping(path = "/student")
 public class StudentController {
     private final StudentServiceImpl studentServiceImpl;
     private final S3Service s3Service;
@@ -93,7 +93,7 @@ public class StudentController {
         return new ResponseEntity<>(responseModel, HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping("/save")
     public void registerNewStudent(@RequestBody Map<String, Object> requestBody) throws GroupNotFoundException, EmailAlreadyTakenException {
         String groupIdsString = requestBody.get("groupId").toString();
         String[] groupIdStrings = groupIdsString.split(",");

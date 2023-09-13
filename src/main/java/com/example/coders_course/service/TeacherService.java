@@ -25,4 +25,7 @@ public interface TeacherService {
 
     void addProfilePhoto(Long id, String fileName);
     String getProfilePhotoName(Long id);
+
+
+    Object getTeacherByEmailAndPassword(String email, String password);
 }
